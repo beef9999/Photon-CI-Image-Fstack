@@ -12,13 +12,19 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.actor }}/photon-ut-base
+  IMAGE_NAME: photon-ut-base
 
 jobs:
   ghr_push:
     runs-on: ubuntu-latest
 
     steps:
+      - name: set lower case owner name
+        run: |
+          echo "OWNER_LC=${OWNER,,}" >>${GITHUB_ENV}
+        env:
+          OWNER: '${{ github.repository_owner }}'
+
       - name: Checkout
         uses: actions/checkout@v4
         
@@ -40,6 +46,6 @@ jobs:
         with:
           push: true
           tags: |
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}:${{ github.sha }}
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}:latest
+            ${{ env.OWNER_LC }}/${{ env.IMAGE_NAME}}:${{ github.sha }}
+            ${{ env.OWNER_LC }}/${{ env.IMAGE_NAME}}:latest
           platforms: linux/amd64,linux/arm64
