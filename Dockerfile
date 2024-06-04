@@ -2,7 +2,7 @@ FROM dokken/centos-stream-8:sha-40294ce
 
 LABEL org.opencontainers.image.source=https://github.com/Coldwings/PhotonLibOS
 
-RUN wget -O /etc/yum.repos.d/CentOS-Base.repo https://mirrors.aliyun.com/repo/Centos-vault-8.5.2111.repo && \
+RUN wget -O /etc/yum.repos.d/CentOS-Base.repo https://mirrors.aliyun.com/repo/Centos-8.repo && \
     yum clean all && yum makecache && \
     dnf install -y epel-release cmake 'dnf-command(config-manager)' && \
     dnf config-manager --set-enabled powertools && \
