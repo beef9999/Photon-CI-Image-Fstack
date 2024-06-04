@@ -12,7 +12,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: coldwings/photon-ut-base
+  IMAGE_NAME: coldwings/photon-lib-os-ci-base
 
 jobs:
   ghr_push:
@@ -39,5 +39,5 @@ jobs:
         uses:  docker/build-push-action@v5.3.0
         with:
           push: true
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}:latest
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}:${{ github.sha }}
           platforms: linux/amd64,linux/arm64
