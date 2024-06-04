@@ -12,7 +12,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: coldwings/photon-lib-os-ci-base
+  IMAGE_NAME: ${{ github.actor }}/photon-lib-os-ci-base
 
 jobs:
   ghr_push:
