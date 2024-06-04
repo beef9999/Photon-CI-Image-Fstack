@@ -1,4 +1,4 @@
-FROM docker pull dokken/centos-8:sha-d80eb77
+FROM dokken/centos-8:sha-d80eb77
 
 LABEL org.opencontainers.image.source=https://github.com/Coldwings/PhotonLibOS
 
