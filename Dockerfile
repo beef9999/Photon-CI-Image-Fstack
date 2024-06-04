@@ -1,4 +1,4 @@
-FROM dokken/centos-8:sha-d80eb77
+FROM openanolis/anolisos:23
 
 LABEL org.opencontainers.image.source=https://github.com/Coldwings/PhotonLibOS
 
