@@ -1,6 +1,6 @@
 FROM almalinux:8
 
-LABEL org.opencontainers.image.source=https://github.com/Coldwings/PhotonLibOS
+LABEL org.opencontainers.image.source=https://github.com/Coldwings/Photon-CI-Base-Image
 
 RUN dnf install -y git cmake gcc-c++ openssl-devel libcurl-devel libaio-devel sudo zstd wget && \
     dnf install -y epel-release 'dnf-command(config-manager)' && \
