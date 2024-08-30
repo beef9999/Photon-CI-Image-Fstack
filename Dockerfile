@@ -1,17 +1,20 @@
-FROM almalinux:8
+FROM debian:11
 
-LABEL org.opencontainers.image.source=https://github.com/Coldwings/Photon-CI-Base-Image
+LABEL org.opencontainers.image.source=https://github.com/beef9999/Photon-CI-Image-Fstack
 
-RUN dnf install -y git cmake gcc-c++ openssl-devel libcurl-devel libaio-devel sudo zstd wget && \
-    dnf install -y epel-release 'dnf-command(config-manager)' && \
-    dnf config-manager --set-enabled powertools && \
-    dnf install -y gtest-devel gmock-devel fuse-devel libgsasl-devel e2fsprogs-devel && \
-    dnf install -y gcc-toolset-9-gcc-c++ gcc-toolset-10-gcc-c++ gcc-toolset-11-gcc-c++ gcc-toolset-12-gcc-c++ && \
-    dnf clean all && rm -rf /var/cache/yum && \
-    wget https://github.com/gflags/gflags/archive/refs/tags/v2.1.2.tar.gz -O - | tar -xvz && \
-    cd gflags-2.1.2 && export CXXFLAGS="-fPIC" && cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_SHARED_LIBS=1 -DBUILD_STATIC_LIBS=1 . && make -j 8 && make install && \
-    cd .. && rm -rf gflags-2.1.2 && ln -s libgflags.so.2.1.2 /usr/local/lib/libgflags.so.2.1 && \
-    wget https://github.com/axboe/liburing/archive/refs/tags/liburing-2.3.tar.gz -O - | tar -xvz && \
-    cd liburing-liburing-2.3 && export CFLAGS="-fPIC -O3 -Wall -Wextra -fno-stack-protector" && ./configure && make -C src -j $(nprocs) && make install && cd .. && rm -rf liburing-liburing-2.3
-
-ENV LD_LIBRARY_PATH=/usr/local/lib:/usr/local/lib64:/usr/lib:/usr/lib64:/lib:/lib64
+RUN apt update -y && \
+    apt install -y build-essential git curl cmake libssl-dev libcurl4-openssl-dev libaio-dev zlib1g-dev libgtest-dev libgmock-dev libgflags-dev libfuse-dev libgsasl7-dev && \
+    apt install -y python3-pip python3-pyelftools libnuma-dev && \
+    pip3 install ninja meson && \
+    cd /root && \
+    curl -LO https://github.com/F-Stack/f-stack/archive/refs/tags/v1.22.tar.gz && \
+    tar xf v1.22.tar.gz && \
+    cd /root/f-stack-1.22/dpdk/ && \
+    CONFIG_RTE_LIBRTE_MLX5_PMD=y meson -Denable_kmods=false -Dtests=false build && \
+    cd build && \
+    ninja && \
+    ninja install && \
+    export FF_PATH=/root/f-stack-1.22 && \
+    cd /root/f-stack-1.22/lib && \
+    make -j && \
+    make install
